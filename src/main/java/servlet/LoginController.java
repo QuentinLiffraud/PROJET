@@ -7,10 +7,15 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modele.*;
 
 /**
  *
@@ -28,19 +33,41 @@ public class LoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            //Action appelée ? 
+            String action = request.getParameter("action");
+            if (null != action) {
+                switch (action) {
+                    case "connexion":
+                        checkLogin(request);
+                        break;
+                    case "deconnexion":
+                        doLogout(request);
+                        break;
+                    case "Commander":
+                        AjouterCommande(request);
+                        break;
+                }
+            }
+
+            // Est-ce que l'utilisateur est connecté ?
+            // On cherche l'attribut userName dans la session
+            String userName = findUserInSession(request);
+            String userAdmin = findAdminInSession(request);
+            String jspView;
+            if (userName != null) {
+                jspView = "Page Client.jsp";
+            } else {
+                jspView = "Connexion.jsp";
+            }
+            if (userAdmin != null) {
+                jspView = "GraphiqueParCatégorie.jsp";
+            }
+            // On va vers la page choisie
+            request.getRequestDispatcher(jspView).forward(request, response);
+
         }
     }
 
@@ -56,7 +83,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -70,7 +101,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -83,4 +118,92 @@ public class LoginController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Vérifie l'identifiant et le mot de passe d'un utilisateur afin de l'authentifier
+     * @param request
+     * @throws SQLException 
+     */
+    private void checkLogin(HttpServletRequest request) throws SQLException {
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+
+        // Les paramètres transmis dans la requête
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+
+        /* Le login/password défini dans web.xml */
+        String loginAd = getInitParameter("loginAdmin");
+        String passwordAd = getInitParameter("passwordAdmin");
+        String userName = getInitParameter("ID");
+
+        if (loginAd.equals(login) && passwordAd.equals(password)) {
+            HttpSession session = request.getSession(true); // démarre la session
+            session.setAttribute("userAdmin", userName);
+        } else {
+            if (dao.verifClientConnexion(login, password)) {
+                // On a trouvé la combinaison login / password
+                // On stocke l'information dans la session
+                HttpSession session = request.getSession(true); // démarre la session
+                //Nom du client (Non admin)
+                String name = dao.nomClient(login, password);
+                session.setAttribute("userName", name);
+                session.setAttribute("id", password);
+            } else { // On positionne un message d'erreur pour l'afficher dans la JSP
+                request.setAttribute("errorMessage", "Login/Password incorrect");
+            }
+        }
+    }
+
+    /**
+     * Déconnecte un utilisateur
+     * @param request 
+     */
+    private void doLogout(HttpServletRequest request) {
+        // On termine la session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
+
+    /**
+     * 
+     * @param request
+     * @return 
+     */
+    private String findUserInSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (session == null) ? null : (String) session.getAttribute("userName");
+    }
+
+    /**
+     * 
+     * @param request
+     * @return 
+     */
+    private String findAdminInSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (session == null) ? null : (String) session.getAttribute("userAdmin");
+    }
+
+    
+    /**
+     * 
+     * @param request
+     * @throws SQLException 
+     */
+    private void AjouterCommande(HttpServletRequest request) throws SQLException {
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+
+        int quantite = Integer.parseInt(request.getParameter("quantite"));
+        int id = Integer.parseInt(request.getParameter("id"));
+        float fraisport = Float.parseFloat(request.getParameter("fraisport"));
+        String dateAchat = request.getParameter("dateAchat");
+        String dateLivraison = request.getParameter("dateLivraison");
+        String description = request.getParameter("produit");
+
+        // TODO Ajouter une commande à l'aide d'une fonction du DAO => Requete sql avec ces valeurs
+        //PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
+        //dao.ajoutCommande(commande);
+    }
+    
 }

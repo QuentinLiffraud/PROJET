@@ -3,14 +3,34 @@
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>servlet.LoginController</servlet-class>
+        
+        <!-- Les identifiants pour se connecter -->
+        <init-param>
+            <param-name>loginAdmin</param-name>
+            <param-value>Admin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>passwordAdmin</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ID</param-name>
+            <param-value>Mr Admin</param-value>
+        </init-param>
     </servlet>
+    
+    <!-- Contrôleur pour la connexion -->
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            1
         </session-timeout>
     </session-config>
+    
+    <welcome-file-list>
+        <welcome-file>LoginController</welcome-file>
+    </welcome-file-list>
 </web-app>
