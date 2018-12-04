@@ -18,13 +18,13 @@
         <div style="color:red">${errorMessage}</div></br>
         <form action="<c:url value="/" />" mehod="POST">
             <fieldset id="cadre">
-                <legend>Connexion</legend>
+            <h2>Connexion</h2>
             <label for="log"> Login :<span class="requis">*</span></label>
             <input name="login" /></br>
             <label for="mdp"> Password :<span class="requis">*</span></label>
             <input type="password" name="password" /></br>
             
-            </br><input type="submit" name="action" value="connexion" />
+            </br><input type="submit" name="action" value="Connexion" />
             </fieldset>
         </form>
     </body>
