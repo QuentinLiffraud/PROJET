@@ -17,7 +17,7 @@
     <body>
         <div style="color:red">${errorMessage}</div></br>
         <form action="<c:url value="/" />" mehod="POST">
-            <fieldset>
+            <fieldset id="cadre">
                 <legend>Connexion</legend>
             <label for="log"> Login :<span class="requis">*</span></label>
             <input name="login" /></br>
