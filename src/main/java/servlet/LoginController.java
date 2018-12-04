@@ -201,9 +201,9 @@ public class LoginController extends HttpServlet {
         String dateLivraison = request.getParameter("dateLivraison");
         String description = request.getParameter("produit");
 
-        // TODO Ajouter une commande à l'aide d'une fonction du DAO => Requete sql avec ces valeurs
-        //PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
-        //dao.ajoutCommande(commande);
+        // Ajouter une commande dans la base de données SAMPLE
+        PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
+        dao.ajoutCommande(commande);
     }
     
 }
