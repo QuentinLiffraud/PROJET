@@ -11,7 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Page de Connexion</title>
-        <link rel="icon" type="image/png" href="Pictures/favicon.png" />
         <link rel="stylesheet" href="Connexion.css" />
     </head>
     <body>
@@ -25,6 +24,7 @@
             <input type="password" name="password" /></br>
             
             </br><input type="submit" name="action" value="Connexion" />
+            <input type="submit" name="action" value="S'inscrire" />
             </fieldset>
         </form>
     </body>

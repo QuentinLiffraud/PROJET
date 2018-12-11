@@ -1,0 +1,93 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 11 déc. 2018, 16:22:42
+    Author     : ClemTouil
+*/
+
+body {
+    background-color :#6bdafe;
+}
+h1 {
+    text-align: center;
+    font-style: normal;
+    font-family: Comic Sans MS;
+    
+}
+form{
+    padding:10px;
+    width:300px;
+    margin:auto;
+    margin-top: 55px;
+}
+form#deco {
+    margin-top: 10px;
+    margin-right: 20px;
+    width : 100px;
+    float : right;
+}
+fieldset {
+ padding:0 20px 20px 20px;
+ margin-bottom:10px;
+ border:1px solid white;
+ border-radius: 4px;
+}
+legend {
+ color:#005DFF;
+ font-weight:bold
+}
+label{
+    display: block;
+}
+select {
+ padding:3px;
+ border:1px solid #7EACFB;
+ border-radius:4px;
+ width:200px;
+ box-shadow:1px 1px 2px #95B7F3 inset;
+ }
+input {
+ padding:3px;
+ border:1px solid #7EACFB;
+ border-radius:4px;
+ width:200px;
+ box-shadow:1px 1px 2px #95B7F3 inset;
+ }
+ 
+input[type=submit]{
+ width:105px;
+ margin-right:30px;
+ box-shadow:1px 1px 1px #95B7F3;
+ cursor:pointer;
+ float: right;
+}
+
+table{
+   border:3px solid #6495ed;
+   border-collapse:collapse;
+   width:70%;
+   margin:auto;
+}
+
+th {
+font-family:monospace;
+border:1px dotted #6495ed;
+padding: 4px;
+background-color:#EFF6FF;
+width:10%;
+}
+
+th #dl {
+    width: 20%
+}
+
+#cadre {
+    background : white; 
+}
+
+h2 {
+    color :  #005DFF;
+}
