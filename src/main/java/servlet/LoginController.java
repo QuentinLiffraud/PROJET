@@ -61,9 +61,9 @@ public class LoginController extends HttpServlet {
                 jspView = "Page Client.jsp";
             } else {
                 jspView = "Connexion.jsp";
-            }
+            }  // TODO Créer un nouvel utilisateur si on clique sur le bouton S'inscrire
             if (userAdmin != null) {
-                jspView = "GraphiqueParCatégorie.jsp";
+                jspView = "GraphiqueParCatégorie.jsp";  // TODO Implémenter jsp + DAO
             }
             // On va vers la page choisie
             request.getRequestDispatcher(jspView).forward(request, response);
