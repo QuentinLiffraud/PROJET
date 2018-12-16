@@ -85,6 +85,17 @@ public class TestLogin {
         assertFalse(myDAO.nomClient(email, id).equals("Jumbo Eagle Corp"));
     }
 
+    @Test
+    public void addNewUser() throws SQLException {
+        String email = "new@gmail.com";
+        String pwd = "dza299";
+        String nom = "yoyo";
+        
+        myDAO.enregistreNouvelUtilisateur(email, pwd, nom);  // TODO pass
+    }
+    
+    
+    
     public static DataSource getDataSource() throws SQLException {
         org.apache.derby.jdbc.ClientDataSource ds = new org.apache.derby.jdbc.ClientDataSource();
         ds.setDatabaseName("sample");

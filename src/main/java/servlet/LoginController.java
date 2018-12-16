@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +40,7 @@ public class LoginController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             //Action appelée ? 
             String action = request.getParameter("action");
+            System.out.println("action = " + action);
             if (null != action) {
                 switch (action) {
                     case "Connexion":
@@ -52,6 +55,8 @@ public class LoginController extends HttpServlet {
                     case "S'inscrire":
                         request.getRequestDispatcher("NewUser.jsp").forward(request, response);  // On redirige l'utilisateur vers la page d'inscription
                         break;
+                    case "Inscription":  // Le client a rempli ses informations
+                        AjoutUtilisateur(request);
                 }
             }
 
@@ -207,7 +212,38 @@ public class LoginController extends HttpServlet {
         dao.ajoutCommande(commande);
     }
 
-    private void inscription(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /* Vérifie qu'un utilisateur ait corectement saisi ses informations d'inscription 
+       Si c'est le cas, l'utilisateur est enregistré
+     */
+    private void AjoutUtilisateur (HttpServletRequest request) throws SQLException {
+        // Les paramètres transmis dans la requête
+        String email = request.getParameter("email");
+        String password = request.getParameter("motdepasse");
+        String verifpwd = request.getParameter("confirmation");
+        String nomUser = request.getParameter("nom");
+        System.out.println("nomUser = " + nomUser);
+        
+        
+        /* Si les informations sont valides, 
+        notamment le champ de vérification du mot de passe doit être identique au mot de passe de l'utilisateur 
+        
+            On ajoute cet utilisateur dans la base de données
+        */
+        
+        // Vérification de l'email :
+        String regex = "^(.+)@(.+)$"; // L'email doit être de la forme nom@fournisseur.fr par exemple
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+            
+        if(! matcher.matches()){  // Si l'email n'est pas syntaxiquement correct
+            request.setAttribute("errorMessage", "Email incorrect");  // On positionne un message d'erreur pour l'afficher dans la JSP
+        } else if (! password.equals(verifpwd)) {  // Vérification des champs mot de passe
+            request.setAttribute("errorMessage", "Mot de passe incorrect");
+        } else {
+            /* On peut inscrire le client */
+            
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
+            dao.enregistreNouvelUtilisateur(email, password, nomUser);
+        }
     }
 }

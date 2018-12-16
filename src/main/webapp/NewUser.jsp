@@ -18,6 +18,8 @@
         <form method="post" action="inscription">
             <fieldset id="cadre">
                 <h2>Inscription</h2>
+                <div style="color:red">${errorMessage}</div></br>
+                
                 <label for="email">Adresse email <span class="requis">*</span></label>
                 <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
                 <br /><br />

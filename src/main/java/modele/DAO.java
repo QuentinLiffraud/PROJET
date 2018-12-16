@@ -113,4 +113,45 @@ public class DAO {
             stmt.executeUpdate();
         }
     }
+
+    /**
+     * Enregistre un nouvel utilisateur après avoir vérifié ses informations
+     * @param email
+     * @param password
+     * @param nomUser 
+     */
+    public void enregistreNouvelUtilisateur(String email, String password, String nomUser) throws SQLException {
+        /* Retrouve l'ID du dernier enregistrement et passe à l'ID suivant pour l'insertion */
+        String sql = "SELECT MAX(CUSTOMER_ID)+1 AS NEWID FROM CUSTOMER";
+        int newId = -1;
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    newId = rs.getInt("NEWID");
+                }
+            }
+        }
+        
+        /* !!!! TODO Insert password => Déployer BDD + hash (afin qu'ils ne soient pas en clair) */
+        String sql2 = "INSERT INTO CUSTOMER VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql2)) {
+
+            stmt.setInt(1, newId);
+            stmt.setString(2, email);
+            
+            if (nomUser != null)  /* Si l'utilisateur a saisi un nom dans le formulaire */
+                stmt.setString(4, nomUser);
+
+            /* Les autres champs sont null */ 
+            for(int i = 3 ; i < 13 ; i++) {
+                if (i != 4)
+                    stmt.setString(i, "NULL");
+            }
+            
+            stmt.executeUpdate();
+        }       
+    }
 }
