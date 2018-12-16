@@ -33,6 +33,7 @@ public class LoginController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -41,6 +42,8 @@ public class LoginController extends HttpServlet {
             //Action appelée ? 
             String action = request.getParameter("action");
             System.out.println("action = " + action);
+            
+            String jspView = "";  // la page vers laquelle on redirigera l'utilisateur
             if (null != action) {
                 switch (action) {
                     case "Connexion":
@@ -53,10 +56,14 @@ public class LoginController extends HttpServlet {
                         AjouterCommande(request);
                         break;
                     case "S'inscrire":
-                        request.getRequestDispatcher("NewUser.jsp").forward(request, response);  // On redirige l'utilisateur vers la page d'inscription
+                        jspView = "NewUser.jsp";
                         break;
                     case "Inscription":  // Le client a rempli ses informations
-                        AjoutUtilisateur(request);
+                        if ( AjoutUtilisateur(request) )
+                           jspView = "Connexion.jsp"; // L'utilisateur peut maintenant se connecter
+                        else
+                            jspView = "NewUser.jsp"; // L'utilisateur re-saisit ses infos
+                        break;
                 }
             }
 
@@ -64,13 +71,14 @@ public class LoginController extends HttpServlet {
             // On cherche l'attribut userName dans la session
             String userName = findUserInSession(request);
             String userAdmin = findAdminInSession(request);
-            String jspView;
+
             if (userName != null) {
                 jspView = "Page Client.jsp";
             } else if (userAdmin != null) {
                 jspView = "GraphiqueParCatégorie.jsp"; // TODO Implémenter jsp + DAO
-            } else {
-                jspView = "Connexion.jsp";
+            } else if (action != "S'inscrire") {
+                System.out.println("!!!!!!!!!!!!!!!!!!!!");
+                jspView = "Connexion.jsp"; // Page par défaut au départ !
             }
             
             // On redirige l'utilisateur vers la bonne page (jsp)
@@ -215,15 +223,14 @@ public class LoginController extends HttpServlet {
     /* Vérifie qu'un utilisateur ait corectement saisi ses informations d'inscription 
        Si c'est le cas, l'utilisateur est enregistré
      */
-    private void AjoutUtilisateur (HttpServletRequest request) throws SQLException {
+    private boolean AjoutUtilisateur (HttpServletRequest request) throws SQLException, ServletException, IOException {
         // Les paramètres transmis dans la requête
         String email = request.getParameter("email");
         String password = request.getParameter("motdepasse");
         String verifpwd = request.getParameter("confirmation");
         String nomUser = request.getParameter("nom");
         System.out.println("nomUser = " + nomUser);
-        
-        
+
         /* Si les informations sont valides, 
         notamment le champ de vérification du mot de passe doit être identique au mot de passe de l'utilisateur 
         
@@ -236,14 +243,17 @@ public class LoginController extends HttpServlet {
         Matcher matcher = pattern.matcher(email);
             
         if(! matcher.matches()){  // Si l'email n'est pas syntaxiquement correct
-            request.setAttribute("errorMessage", "Email incorrect");  // On positionne un message d'erreur pour l'afficher dans la JSP
+            request.setAttribute("errorMessage", "Email incorrect");  // On positionne un message d'erreur pour l'afficher dans la JSP       
         } else if (! password.equals(verifpwd)) {  // Vérification des champs mot de passe
             request.setAttribute("errorMessage", "Mot de passe incorrect");
         } else {
             /* On peut inscrire le client */
-            
             DAO dao = new DAO(DataSourceFactory.getDataSource());
             dao.enregistreNouvelUtilisateur(email, password, nomUser);
+            
+            return true; // L'utilisateur a correctement saisi ses infos
         }
+        
+        return false;
     }
 }

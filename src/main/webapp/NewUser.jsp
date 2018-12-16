@@ -18,7 +18,6 @@
         <form method="post" action="inscription">
             <fieldset id="cadre">
                 <h2>Inscription</h2>
-                <div style="color:red">${errorMessage}</div></br>
                 
                 <label for="email">Adresse email <span class="requis">*</span></label>
                 <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
@@ -37,8 +36,11 @@
                 <label for="nom">Nom d'utilisateur</label>
                 <input type="text" id="nom" name="nom" value="" size="20" maxlength="20" />
                 <br /><br />
-
-                <input type="submit" value="Inscription" class="btn" />
+                
+                <!-- Message d'erreur si on détècte un problème -->
+                <div style="color:red">${errorMessage}</div></br>
+                
+                <input type="submit" name="action" value="Inscription" class="btn" />
                 <br />
             </fieldset>
         </form>

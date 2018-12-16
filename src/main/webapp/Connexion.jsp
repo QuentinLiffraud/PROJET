@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="css/Connexion.css" />
     </head>
     <body>
-        <div style="color:red">${errorMessage}</div></br>
         <form action="<c:url value="/" />" mehod="POST">
             <fieldset id="cadre">
             <h2>Connexion</h2>
@@ -23,6 +22,7 @@
             <label for="mdp"> Password :<span class="requis">*</span></label>
             <input type="password" name="password" /></br>
             
+            <div style="color:red">${errorMessage}</div></br>
             </br><input type="submit" name="action" value="Connexion" />
             <input type="submit" name="action" value="S'inscrire" />
             </fieldset>

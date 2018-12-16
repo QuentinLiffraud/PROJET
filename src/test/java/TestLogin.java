@@ -86,12 +86,13 @@ public class TestLogin {
     }
 
     @Test
+    /* Teste l'insertion d'un nouvel utilisateur dans la base de données */
     public void addNewUser() throws SQLException {
         String email = "new@gmail.com";
         String pwd = "dza299";
         String nom = "yoyo";
         
-        myDAO.enregistreNouvelUtilisateur(email, pwd, nom);  // TODO pass
+        myDAO.enregistreNouvelUtilisateur(email, pwd, nom);
     }
     
     
