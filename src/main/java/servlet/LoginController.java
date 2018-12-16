@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
             String action = request.getParameter("action");
             if (null != action) {
                 switch (action) {
-                    case "connexion":
+                    case "Connexion":
                         checkLogin(request);
                         break;
                     case "deconnexion":
@@ -48,6 +48,9 @@ public class LoginController extends HttpServlet {
                         break;
                     case "Commander":
                         AjouterCommande(request);
+                        break;
+                    case "S'inscrire":
+                        request.getRequestDispatcher("NewUser.jsp").forward(request, response);  // On redirige l'utilisateur vers la page d'inscription
                         break;
                 }
             }
@@ -59,15 +62,14 @@ public class LoginController extends HttpServlet {
             String jspView;
             if (userName != null) {
                 jspView = "Page Client.jsp";
+            } else if (userAdmin != null) {
+                jspView = "GraphiqueParCatégorie.jsp"; // TODO Implémenter jsp + DAO
             } else {
                 jspView = "Connexion.jsp";
-            }  // TODO Créer un nouvel utilisateur si on clique sur le bouton S'inscrire
-            if (userAdmin != null) {
-                jspView = "GraphiqueParCatégorie.jsp";  // TODO Implémenter jsp + DAO
             }
-            // On va vers la page choisie
+            
+            // On redirige l'utilisateur vers la bonne page (jsp)
             request.getRequestDispatcher(jspView).forward(request, response);
-
         }
     }
 
@@ -184,7 +186,6 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession(false);
         return (session == null) ? null : (String) session.getAttribute("userAdmin");
     }
-
     
     /**
      * 
@@ -205,5 +206,8 @@ public class LoginController extends HttpServlet {
         PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
         dao.ajoutCommande(commande);
     }
-    
+
+    private void inscription(HttpServletRequest request) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Page de Connexion</title>
-        <link rel="stylesheet" href="Connexion.css" />
+        <link rel="stylesheet" href="css/Connexion.css" />
     </head>
     <body>
         <div style="color:red">${errorMessage}</div></br>
