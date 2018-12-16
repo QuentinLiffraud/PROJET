@@ -51,6 +51,7 @@ public class LoginController extends HttpServlet {
                         break;
                     case "deconnexion":
                         doLogout(request);
+                        jspView = "Connexion.jsp";  // Un autre utilisateur peut se connecter
                         break;
                     case "Commander":
                         AjouterCommande(request);
@@ -59,6 +60,7 @@ public class LoginController extends HttpServlet {
                         jspView = "NewUser.jsp";
                         break;
                     case "Inscription":  // Le client a rempli ses informations
+                        System.out.println("Inscription user");
                         if ( AjoutUtilisateur(request) )
                            jspView = "Connexion.jsp"; // L'utilisateur peut maintenant se connecter
                         else
@@ -76,8 +78,7 @@ public class LoginController extends HttpServlet {
                 jspView = "Page Client.jsp";
             } else if (userAdmin != null) {
                 jspView = "GraphiqueParCatégorie.jsp"; // TODO Implémenter jsp + DAO
-            } else if (action != "S'inscrire") {
-                System.out.println("!!!!!!!!!!!!!!!!!!!!");
+            } else if (action == null) {
                 jspView = "Connexion.jsp"; // Page par défaut au départ !
             }
             
@@ -224,6 +225,8 @@ public class LoginController extends HttpServlet {
        Si c'est le cas, l'utilisateur est enregistré
      */
     private boolean AjoutUtilisateur (HttpServletRequest request) throws SQLException, ServletException, IOException {
+        boolean verif = false;
+
         // Les paramètres transmis dans la requête
         String email = request.getParameter("email");
         String password = request.getParameter("motdepasse");
@@ -250,10 +253,9 @@ public class LoginController extends HttpServlet {
             /* On peut inscrire le client */
             DAO dao = new DAO(DataSourceFactory.getDataSource());
             dao.enregistreNouvelUtilisateur(email, password, nomUser);
-            
-            return true; // L'utilisateur a correctement saisi ses infos
+            verif = true;  // L'utilisateur a correctement saisi ses infos
         }
         
-        return false;
+        return verif;
     }
 }

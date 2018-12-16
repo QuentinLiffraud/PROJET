@@ -57,6 +57,7 @@ public class DAO {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
                 throw new SQLException(ex.getMessage());
             }
+            
             return verif;
         }
     }
