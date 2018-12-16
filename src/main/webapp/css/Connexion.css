@@ -7,7 +7,6 @@ and open the template in the editor.
     Created on : 1 déc. 2018, 12:18:49
     Author     : Clément
 */
-
 body {
     background-color :#6bdafe;
 }
@@ -34,17 +33,16 @@ label{
     display: block;
 }
 input {
- padding:3px;
- border:1px solid #7EACFB;
- border-radius:4px;
- width:200px;
-
+    padding:3px;
+    border:1px solid #7EACFB;
+    border-radius:4px;
+    width:200px;
  }
- input[type=submit]{
- width:100px;
- margin-left:10px;
 
- cursor:pointer;
+input[type=submit]{
+    width:100px;
+    margin-left:10px;
+    cursor:pointer;
  }
  
  #cadre{

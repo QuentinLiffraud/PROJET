@@ -19,7 +19,7 @@
             <fieldset id="cadre">
             <h2>Connexion</h2>
             <label for="log"> Login :<span class="requis">*</span></label>
-            <input name="login" /></br>
+            <input name="login" /></br></br>
             <label for="mdp"> Password :<span class="requis">*</span></label>
             <input type="password" name="password" /></br>
             

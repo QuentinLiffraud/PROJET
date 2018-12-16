@@ -11,38 +11,32 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Inscription</title>
         <link rel="stylesheet" href="css/NewUser.css" />
     </head>
 
     <body>
         <form method="post" action="inscription">
-
-            <fieldset>
-                <legend>Inscription</legend>
-
-                <p>Vous pouvez vous inscrire via ce formulaire.</p>
-
+            <fieldset id="cadre">
+                <h2>Inscription</h2>
                 <label for="email">Adresse email <span class="requis">*</span></label>
                 <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
-                <br />
+                <br /><br />
 
 
                 <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
                 <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
-                <br />
+                <br /><br />
 
 
                 <label for="confirmation">Confirmation du mot de passe <span class="requis">*</span></label>
-                <input type="password" id="confirmation" name="confirmation" value="" size="20" maxlength="20" />
-                <br />
-
+                <input type="password" id="confirmation" name="confirmation" value="" maxlength="20" />
+                <br /><br />
 
                 <label for="nom">Nom d'utilisateur</label>
                 <input type="text" id="nom" name="nom" value="" size="20" maxlength="20" />
-                <br />
+                <br /><br />
 
-                <input type="submit" value="Inscription" class="sansLabel" />
+                <input type="submit" value="Inscription" class="btn" />
                 <br />
             </fieldset>
         </form>

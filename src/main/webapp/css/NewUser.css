@@ -9,39 +9,68 @@ and open the template in the editor.
 */
 
 /* Général ------------------------------------------------------------------------------------- */
-body, p, legend, label, input {
-    font: normal 8pt verdana, helvetica, sans-serif;
+body {
+    background-color :#6bdafe;
 }
 
 
-fieldset {
+#main {
     padding: 10px;
     border: 1px #0568CD solid;
+    background-color : white;
 }
 
 
-legend {
+h2 {
     font-weight: bold;
     color: #0568CD;
 }
 
+fieldset {
+    padding:0 20px 20px 20px;
+    margin-bottom:10px;
+    border:1px solid #7EACFB;
+    border-radius: 4px;
+}
+
+ #cadre{
+     background-color: white;
+ }
 
 /* Formulaires --------------------------------------------------------------------------------------- */
+form {
+    padding:10px;
+    width:500px;
+    margin:auto;
+    margin-top: 180px;
+}
+
 form label {
-    float: left;
-    width: 200px;
+    display: block; /* Pour aligner les champs */
+    width: 300px;
     margin: 3px 0px 0px 0px;
 }
 
 
 form input {
-    margin: 3px 3px 0px 0px;
-    border: 1px #999 solid;
-}
+    padding:3px;
+    border:1px solid #7EACFB;
+    border-radius:4px;
+    width:200px;
+ }
+
+input[type=submit]{
+    width:100px;
+    margin-left:10px;
+    cursor:pointer;
+ }
 
 
-form input.sansLabel {
-    margin-left: 200px;
+form input.btn {
+     padding:3px;
+ border:1px solid #7EACFB;
+ border-radius:4px;
+ width:200px;
 }
 
 
