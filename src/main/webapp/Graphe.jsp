@@ -137,6 +137,8 @@
     <body>
         <h1> Bienvenue ${userAdmin} </h1>
         <form action="ServletGraphiques" method="POST" id="graph">   
+             Date Début : <input type="date" name="dateDebut"></br>
+             Date fin : <input type="date" name="datefin"></br>
             <!-- Le graphique apparaît ici -->
             <div id="piechart" style="width: 400px; height: 400px; display: inline-block; background-color: #6bdafe;"></div>
             <div id="piechart2" style="width: 400px; height: 400px; display: inline-block; background-color: #6bdafe;"></div>
