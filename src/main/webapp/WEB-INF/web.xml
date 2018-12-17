@@ -3,7 +3,6 @@
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>servlet.LoginController</servlet-class>
-        
         <!-- Les identifiants pour se connecter -->
         <init-param>
             <param-name>loginAdmin</param-name>
@@ -18,18 +17,40 @@
             <param-value>Mr Admin</param-value>
         </init-param>
     </servlet>
-    
     <!-- Contrôleur pour la connexion -->
+    <servlet>
+        <servlet-name>ServletGraphiqueLocalisation</servlet-name>
+        <servlet-class>servlet.ServletGraphiqueLocalisation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletGraphiqueNom</servlet-name>
+        <servlet-class>servlet.ServletGraphiqueNom</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletGraphiques</servlet-name>
+        <servlet-class>servlet.ServletGraphiques</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGraphiqueLocalisation</servlet-name>
+        <url-pattern>/ServletGraphiqueLocalisation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGraphiqueNom</servlet-name>
+        <url-pattern>/ServletGraphiqueNom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGraphiques</servlet-name>
+        <url-pattern>/ServletGraphiques</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             1
         </session-timeout>
     </session-config>
-    
     <welcome-file-list>
         <welcome-file>LoginController</welcome-file>
     </welcome-file-list>

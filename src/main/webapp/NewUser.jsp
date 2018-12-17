@@ -5,7 +5,7 @@
 --%>
 
 <%@ page pageEncoding="UTF-8" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -18,7 +18,7 @@
         <form method="post" action="inscription">
             <fieldset id="cadre">
                 <h2>Inscription</h2>
-                
+
                 <label for="email">Adresse email <span class="requis">*</span></label>
                 <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
                 <br /><br />
@@ -36,10 +36,10 @@
                 <label for="nom">Nom d'utilisateur</label>
                 <input type="text" id="nom" name="nom" value="" size="20" maxlength="20" />
                 <br /><br />
-                
+
                 <!-- Message d'erreur si on détècte un problème -->
                 <div style="color:red">${errorMessage}</div></br>
-                
+
                 <input type="submit" name="action" value="Inscription" class="btn" />
                 <br />
             </fieldset>

@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author Quentin
+ * @author Quentin, Florent
  */
 public class DAO {
 
@@ -220,5 +220,48 @@ public class DAO {
 
             stmt.executeUpdate();
         }       
+    }
+
+
+    /**
+     * Renvoie la liste des produits du client passé en paramètre
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public List<PurchaseEntity> produitClient(String id) throws SQLException {
+        ArrayList<PurchaseEntity> result = new ArrayList<>();
+
+        String sql = "SELECT PURCHASE_ORDER.ORDER_NUM,PRODUCT.DESCRIPTION,PRODUCT.PURCHASE_COST,PURCHASE_ORDER.QUANTITY,PURCHASE_ORDER.SHIPPING_COST,PURCHASE_ORDER.SALES_DATE,PURCHASE_ORDER.SHIPPING_DATE \n"
+                + "FROM PURCHASE_ORDER\n"
+                + "    INNER JOIN PRODUCT\n"
+                + "    ON PURCHASE_ORDER.PRODUCT_ID = PRODUCT.PRODUCT_ID\n"
+                + "WHERE CUSTOMER_ID=?";
+
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int order = rs.getInt("ORDER_NUM");
+                    int quantite = rs.getInt("QUANTITY");
+                    float prix = rs.getFloat("PURCHASE_COST");
+                    float sc = rs.getFloat("SHIPPING_COST");
+                    String dateach = rs.getString("SALES_DATE");
+                    String dateliv = rs.getString("SHIPPING_DATE");
+                    String description = rs.getString("DESCRIPTION");
+
+                    result.add(new PurchaseEntity(order, Integer.parseInt(id), quantite, prix, sc, dateach, dateliv, description));
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new SQLException(ex.getMessage());
+            }
+            return result;
+        }
     }
 }
