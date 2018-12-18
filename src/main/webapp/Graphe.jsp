@@ -12,7 +12,7 @@
 <html>
     <head>
         <title>Graphiques des ventes</title>
-        <link rel="stylesheet" href="Admin.css" />
+        <link rel="stylesheet" href="css/Admin.css" />
         <link rel="icon" type="image/png" href="Pictures/favicon_admin.ico" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<!-- On charge l'API Google -->
