@@ -47,8 +47,11 @@ public class LoginController extends HttpServlet {
             if (null != action) {
                 switch (action) {
                     case "Connexion":
-                        checkLogin(request);
-                        break;
+                        if (! checkLogin(request)) {
+                            jspView = "Connexion.jsp"; // // L'utilisateur re-saisit ses infos, le nom ou le mot de passe est manquant
+                            break;
+                        }
+
                     case "deconnexion":
                         doLogout(request);
                         jspView = "Connexion.jsp";  // Un autre utilisateur peut se connecter
@@ -79,7 +82,7 @@ public class LoginController extends HttpServlet {
                 jspView = "Page Client.jsp";
             } else if (userAdmin != null) {
                 jspView = "Graphe.jsp"; // La page des graphiques est accessible par l'admin !
-            } else if (action == null) {
+            } else if (action == null) {  // Un des champs nom et mot de passe est vide (ou les 2)
                 jspView = "Connexion.jsp"; // Page par défaut au départ !
             }
 
@@ -142,15 +145,16 @@ public class LoginController extends HttpServlet {
      * @param request
      * @throws SQLException
      */
-    private void checkLogin(HttpServletRequest request) throws SQLException {
+    private boolean checkLogin(HttpServletRequest request) throws SQLException {
+        boolean verif = false;
         DAO dao = new DAO(DataSourceFactory.getDataSource());
 
         // Les paramètres transmis dans la requête
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-
+        
         // Si l'utilisateur a oublié de saisir un champ : 
-        if (login.length() == 0 || password.length() == 0) {
+        if ( login.equals("") || password.equals("") || login.length() == 0 || password.length() == 0) {
             request.setAttribute("errorMessage", "Login/Password incorrect");
         } else {
             /* Le login/password défini dans web.xml */
@@ -161,6 +165,7 @@ public class LoginController extends HttpServlet {
             if (loginAd.equals(login) && passwordAd.equals(password)) {
                 HttpSession session = request.getSession(true); // démarre la session
                 session.setAttribute("userAdmin", userName);
+                verif = true;
             } else {
                 if (dao.verifClientConnexion(login, password)) {
                     // On a trouvé la combinaison login / password
@@ -170,11 +175,14 @@ public class LoginController extends HttpServlet {
                     String name = dao.nomClient(login, password);
                     session.setAttribute("userName", name);
                     session.setAttribute("id", password);
+                    verif = true;
                 } else { // On positionne un message d'erreur pour l'afficher dans la JSP
                     request.setAttribute("errorMessage", "Login/Password incorrect");
                 }
             }
         }
+        
+        return verif;
     }
 
     /**
