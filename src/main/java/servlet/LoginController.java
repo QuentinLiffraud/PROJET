@@ -60,7 +60,6 @@ public class LoginController extends HttpServlet {
                         jspView = "NewUser.jsp";
                         break;
                     case "Inscription":  // Le client a rempli ses informations
-                        System.out.println("!!!!!!!!!!!! JE VEUX M'INSCRIRE");
                         if (AjoutUtilisateur(request)) {
                             jspView = "Connexion.jsp"; // L'utilisateur peut maintenant se connecter
                             break;
@@ -239,11 +238,11 @@ public class LoginController extends HttpServlet {
 
         // Les paramètres transmis dans la requête
         String email = request.getParameter("email");
-        String password = request.getParameter("motdepasse");
-        String verifpwd = request.getParameter("confirmation");
         String nomUser = request.getParameter("nom");
-        System.out.println("nomUser = " + nomUser);
-
+        String adresse = request.getParameter("adresse");
+        String ville = request.getParameter("ville");
+        String tel = request.getParameter("tel");
+        
         /* Si les informations sont valides, 
         notamment le champ de vérification du mot de passe doit être identique au mot de passe de l'utilisateur 
         
@@ -256,12 +255,12 @@ public class LoginController extends HttpServlet {
 
         if (!matcher.matches()) {  // Si l'email n'est pas syntaxiquement correct
             request.setAttribute("errorMessage", "Email incorrect");  // On positionne un message d'erreur pour l'afficher dans la JSP       
-        } else if (!password.equals(verifpwd)) {  // Vérification des champs mot de passe
-            request.setAttribute("errorMessage", "Mot de passe incorrect");
+        } else if ( ville.length() == 0 || adresse.length() == 0 || tel.length() == 0 ) {  // Vérification des champs obligatoires (ville, adresse et telephone)
+            request.setAttribute("errorMessage", "Au moins un champ n'est pas renseigné !");
         } else {
             /* On peut inscrire le client */
             DAO dao = new DAO(DataSourceFactory.getDataSource());
-            dao.enregistreNouvelUtilisateur(email, password, nomUser);
+            dao.enregistreNouvelUtilisateur(email, adresse, nomUser, ville, tel);
             verif = true;  // L'utilisateur a correctement saisi ses infos
         }
 

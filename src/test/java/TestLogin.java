@@ -89,10 +89,13 @@ public class TestLogin {
     /* Teste l'insertion d'un nouvel utilisateur dans la base de données */
     public void addNewUser() throws SQLException {
         String email = "new@gmail.com";
-        String pwd = "dza299";
-        String nom = "yoyo";
+        String adresse = "68 rue des Lilas";
+        String nom = "";
+        String ville = "Marseille";
+        String tel = "0625849597";
         
-        myDAO.enregistreNouvelUtilisateur(email, pwd, nom);
+
+        myDAO.enregistreNouvelUtilisateur(email, adresse, nom, ville, tel);
     }
     
     

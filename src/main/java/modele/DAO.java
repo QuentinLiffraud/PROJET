@@ -182,19 +182,19 @@ public class DAO {
     /**
      * Enregistre un nouvel utilisateur après avoir vérifié ses informations
      * @param email
-     * @param password
+     * @param adresse
      * @param nomUser 
+     * @throws java.sql.SQLException 
      */
-    public void enregistreNouvelUtilisateur(String email, String password, String nomUser) throws SQLException {
+    public void enregistreNouvelUtilisateur(String email, String adresse, String nomUser, String ville, String tel) throws SQLException {
         int newId = newUserID();
         
         /* !!!! TODO Insert password => Déployer BDD + hash (afin qu'ils ne soient pas en clair) */
-        String sql2 = "INSERT INTO CUSTOMER(CUSTOMER_ID, DISCOUNT_CODE, ZIP, NAME, EMAIL) VALUES(?,?,?,?,?)";
+        String sql2 = "INSERT INTO CUSTOMER(CUSTOMER_ID, DISCOUNT_CODE, ZIP, NAME, ADDRESSLINE1, CITY, PHONE, EMAIL) VALUES(?,?,?,?,?,?,?,?)";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql2)) {
 
             stmt.setInt(1, newId);
-            stmt.setString(5, email);
             
             /* pour le discount_code et le zip, insère un élément aléatoire */
             List<Character> discount_code = Arrays.asList('H', 'L', 'M', 'N');
@@ -220,6 +220,11 @@ public class DAO {
             else
                 stmt.setNull(4, Types.VARCHAR);
 
+            stmt.setString(5, adresse);
+            stmt.setString(6, ville);
+            stmt.setString(7, tel);
+            stmt.setString(8, email);
+            
             stmt.executeUpdate();
         }       
     }

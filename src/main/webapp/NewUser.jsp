@@ -15,7 +15,7 @@
     </head>
 
     <body>
-        <form method="post" action="inscription">
+        <form method="post" action="<c:url value="/" />">
             <fieldset id="cadre">
                 <h2>Inscription</h2>
 
@@ -23,20 +23,22 @@
                 <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
                 <br /><br />
 
-
-                <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
-                <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
-                <br /><br />
-
-
-                <label for="confirmation">Confirmation du mot de passe <span class="requis">*</span></label>
-                <input type="password" id="confirmation" name="confirmation" value="" maxlength="20" />
-                <br /><br />
-
-                <label for="nom">Nom d'utilisateur</label>
+                <label for="nom">Nom d'utilisateur <span class="requis">*</span></label>
                 <input type="text" id="nom" name="nom" value="" size="20" maxlength="20" />
                 <br /><br />
 
+                <label for="adresse">Adresse <span class="requis">*</span></label>
+                <input type="text" id="nom" name="adresse" value="" size="20" maxlength="20" />
+                <br /><br />
+                
+                <label for="ville">Ville <span class="requis">*</span></label>
+                <input type="text" id="nom" name="ville" value="" size="20" maxlength="20" />
+                <br /><br />               
+                
+                <label for="tel">Téléphone <span class="requis">*</span></label>
+                <input type="text" id="nom" name="tel" value="" size="20" maxlength="20" />
+                <br /><br />
+                
                 <!-- Message d'erreur si on détècte un problème -->
                 <div style="color:red">${errorMessage}</div></br>
 
