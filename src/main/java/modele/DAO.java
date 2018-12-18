@@ -310,4 +310,82 @@ public class DAO {
         
         return result;
     }
+    
+    /**
+         * Créer la Map utilisée par le graphique du Chiffre d'affaire par Client
+     *
+     * @param dateDebut
+     * @param dateFin
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Float> TurnoverClient(String dateDebut, String dateFin) throws Exception {
+        Map<String, Float> result = new HashMap<>();
+        if (dateDebut == null) {
+            dateDebut = "2010-05-24";
+        }
+        if (dateFin == null) {
+            dateFin = "2012-05-24";
+        }
+        // Une requête SQL paramétrée
+        String sql = "SELECT SUM(QUANTITY*PURCHASE_COST) AS BENEF,NAME "
+                + "FROM PRODUCT INNER JOIN PURCHASE_ORDER ON PRODUCT.PRODUCT_ID = PURCHASE_ORDER.PRODUCT_ID "
+                + "INNER JOIN CUSTOMER ON CUSTOMER.CUSTOMER_ID = PURCHASE_ORDER.CUSTOMER_ID "
+                + "WHERE SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY NAME ORDER BY BENEF";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql);) {
+            stmt.setString(1, dateDebut);
+            stmt.setString(2, dateFin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // On récupère les champs nécessaires de l'enregistrement courant
+                String nom = rs.getString("NAME");
+                float prix = rs.getFloat("BENEF");
+                // On l'ajoute à la liste des résultats
+                result.put(nom, prix);
+            }
+        }
+        return result;
+    }
+    
+    
+    /**
+     * Créer la Map utilisée par le graphique du Chiffre d'affaire par code
+     * Postal
+     *
+     * @param dateDebut
+     * @param dateFin
+     * @return
+     * @throws Exception
+     */
+    public Map<Integer, Float> PriceLocalisationEntity(String dateDebut, String dateFin) throws Exception {
+        Map<Integer, Float> result = new HashMap<>();
+        if (dateDebut == null) {
+            dateDebut = "2010-05-24";
+        }
+        if (dateFin == null) {
+            dateFin = "2012-05-24";
+        }
+        // Une requête SQL paramétrée
+        String sql = "SELECT SUM(QUANTITY*PURCHASE_COST) AS TOTAL,CUSTOMER.ZIP\n"
+                + "FROM PRODUCT INNER JOIN PURCHASE_ORDER ON PRODUCT.PRODUCT_ID = PURCHASE_ORDER.PRODUCT_ID \n"
+                + "INNER JOIN CUSTOMER ON CUSTOMER.CUSTOMER_ID = PURCHASE_ORDER.CUSTOMER_ID\n"
+                + "WHERE SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY CUSTOMER.ZIP ORDER BY TOTAL";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql);) {
+            stmt.setString(1, dateDebut);
+            stmt.setString(2, dateFin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // On récupère les champs nécessaires de l'enregistrement courant
+                int codePostal = rs.getInt("ZIP");
+                float prix = rs.getFloat("TOTAL");
+                // On l'ajoute à la liste des résultats
+                result.put(codePostal, prix);
+            }
+        }
+        return result;
+    }
 }
