@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -263,5 +265,44 @@ public class DAO {
             }
             return result;
         }
+    }
+    
+    /**
+     * Créer la Map utilisée par le graphique du Chiffre d'affaire par Catégorie
+     *
+     * @param dateDebut
+     * @param dateFin
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Float> PriceCategoryEntity(String dateDebut, String dateFin) throws Exception {
+        Map<String, Float> result = new HashMap<>();
+        if (dateDebut == null) {
+            dateDebut = "2010-05-24";
+        }
+        if (dateFin == null) {
+            dateFin = "2012-05-24";
+        }
+        // Une requête SQL paramétrée
+        String sql = "SELECT SUM(QUANTITY*PURCHASE_COST) AS TOTAL,PRODUCT_CODE.DESCRIPTION\n"
+                + "FROM PRODUCT INNER JOIN PURCHASE_ORDER ON PRODUCT.PRODUCT_ID = PURCHASE_ORDER.PRODUCT_ID \n"
+                + "INNER JOIN PRODUCT_CODE ON PRODUCT_CODE.PROD_CODE=PRODUCT.PRODUCT_CODE\n"
+                + "WHERE SALES_DATE BETWEEN ? AND ? "
+                + "GROUP BY PRODUCT_CODE.DESCRIPTION ORDER BY TOTAL";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql);) {
+            stmt.setString(1, dateDebut);
+            stmt.setString(2, dateFin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // On récupère les champs nécessaires de l'enregistrement courant
+                String description = rs.getString("DESCRIPTION");
+                float prix = rs.getFloat("TOTAL");
+                // On l'ajoute à la liste des résultats
+                result.put(description, prix);
+            }
+        }
+        
+        return result;
     }
 }

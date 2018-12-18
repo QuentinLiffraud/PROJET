@@ -42,7 +42,7 @@ public class ServletGraphiques extends HttpServlet {
 		try {
                         String dateDebut = request.getParameter("dateDebut");
                         String datefin = request.getParameter("datefin");
-			//resultat.put("records", dao.PriceCategoryEntity(dateDebut,datefin));  // TODO Implémenter PriceCategoryEntity DAO
+			resultat.put("records", dao.PriceCategoryEntity(dateDebut,datefin));  // TODO Implémenter PriceCategoryEntity DAO
 		} catch (SQLException ex) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resultat.put("records", Collections.EMPTY_LIST);
