@@ -53,6 +53,8 @@
             <label for="dateL"> Date de livraison</label>
             <input type="date" name="dateLivraison" /></br>
             
+            <!-- Message d'erreur si on détècte un problème -->
+            </br><div style="color:red">${errorMessage}</div></br>
             </br><input type="submit" name="action" value="Commander"/>
             </fieldset>
         </form>    

@@ -61,7 +61,9 @@ public class LoginController extends HttpServlet {
                         break;
                     case "Commander":
                         AjouterCommande(request);
+                        jspView = "Page Client.jsp"; // Si un champ est manquant, on reste sur la page client car il n'a pas voulu se déconnecter
                         break;
+                        
                     case "S'inscrire":
                         jspView = "NewUser.jsp";
                         break;
@@ -230,16 +232,32 @@ public class LoginController extends HttpServlet {
     private void AjouterCommande(HttpServletRequest request) throws SQLException {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
 
-        int quantite = Integer.parseInt(request.getParameter("quantite"));
-        int id = Integer.parseInt(request.getParameter("id"));
-        float fraisport = Float.parseFloat(request.getParameter("fraisport"));
+        int quantite = 0, id = 0;
+        float fraisport = 0.0f;
+        
+        try {
+            quantite = Integer.parseInt(request.getParameter("quantite"));
+            id = Integer.parseInt(request.getParameter("id"));
+            fraisport = Float.parseFloat(request.getParameter("fraisport"));
+        } catch (NumberFormatException e) {  // Si le client oublie un champ concernant des chiffres
+            request.setAttribute("errorMessage", "Au moins un champ n'est pas renseigné !");
+        }
+
         String dateAchat = request.getParameter("dateAchat");
         String dateLivraison = request.getParameter("dateLivraison");
         String description = request.getParameter("produit");
-
-        // Ajouter une commande dans la base de données SAMPLE
-        PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
-        dao.ajoutCommande(commande);
+        
+        System.out.println("quantite !!!" + quantite);
+        System.out.println("id !!!" + id);
+        System.out.println("fraisport !!!" + fraisport);
+        
+        if ( dateAchat.length() == 0 || dateLivraison.length() == 0 || description.length() == 0) {  // Vérification des champs textes obligatoires (tous)
+            request.setAttribute("errorMessage", "Au moins un champ n'est pas renseigné !");
+        } else {
+            // Ajouter une commande dans la base de données SAMPLE
+            PurchaseEntity commande = new PurchaseEntity(1, id, quantite, 30, fraisport, dateAchat, dateLivraison, description);
+            dao.ajoutCommande(commande);
+        }
     }
 
     /* Vérifie qu'un utilisateur ait corectement saisi ses informations d'inscription 

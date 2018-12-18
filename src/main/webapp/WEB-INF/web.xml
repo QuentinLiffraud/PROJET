@@ -14,7 +14,7 @@
         </init-param>
         <init-param>
             <param-name>ID</param-name>
-            <param-value>Mr Admin</param-value>
+            <param-value>M. Admin</param-value>
         </init-param>
     </servlet>
     <!-- Contrôleur pour la connexion -->
