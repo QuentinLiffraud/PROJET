@@ -78,7 +78,7 @@ public class LoginController extends HttpServlet {
             if (userName != null) {
                 jspView = "Page Client.jsp";
             } else if (userAdmin != null) {
-                jspView = "GraphiqueParCatégorie.jsp"; // TODO Implémenter jsp + DAO
+                jspView = "Graphe.jsp"; // La page des graphiques est accessible par l'admin !
             } else if (action == null) {
                 jspView = "Connexion.jsp"; // Page par défaut au départ !
             }
