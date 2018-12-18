@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* com.mycompany.ProjetJEE.run.LoginController
+worker: java -cp target/classes:target/dependency/* com.mycompany.servlet.run.LoginController
