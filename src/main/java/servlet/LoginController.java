@@ -48,7 +48,10 @@ public class LoginController extends HttpServlet {
                 switch (action) {
                     case "Connexion":
                         if (! checkLogin(request)) {
-                            jspView = "Connexion.jsp"; // // L'utilisateur re-saisit ses infos, le nom ou le mot de passe est manquant
+                            jspView = "Connexion.jsp"; // L'utilisateur re-saisit ses infos, le nom ou le mot de passe est manquant
+                            break;
+                        } else {
+                            jspView = "Page Client.jsp"; // Le client accède à sa page et pourra ajouter une commande
                             break;
                         }
 
@@ -162,11 +165,12 @@ public class LoginController extends HttpServlet {
             String passwordAd = getInitParameter("passwordAdmin");
             String userName = getInitParameter("ID");
 
+            // Connexion admin ?
             if (loginAd.equals(login) && passwordAd.equals(password)) {
                 HttpSession session = request.getSession(true); // démarre la session
                 session.setAttribute("userAdmin", userName);
                 verif = true;
-            } else {
+            } else {  // Connexion client
                 if (dao.verifClientConnexion(login, password)) {
                     // On a trouvé la combinaison login / password
                     // On stocke l'information dans la session
